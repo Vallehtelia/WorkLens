@@ -1,1 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.venv*/
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+*.whl
+*.spec
+pip-wheel-metadata/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / tools
+.vscode/
+.idea/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+coverage.xml
+
+# Environment
 .env
+
+# Logs
+logs/*.log
+*.log
+
+# Executables / binaries (do not commit built apps)
+*.exe
+*.dll
+*.pyd
+*.so
+*.dylib

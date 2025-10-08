@@ -68,7 +68,7 @@ def main():
             resp = client.responses.parse(
                 model=MODEL,
                 top_p=1,
-                max_output_tokens=32,
+                max_output_tokens=64,
                 input=[
                     {
                         "role": "system",

@@ -1,0 +1,7 @@
+{
+  "planned_task": "work",
+  "interval_minutes": 1,
+  "image_width": 1280,
+  "api_key_env": "OPENAI_API_KEY",
+  "profession": "ceo of electical company"
+}
