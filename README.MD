@@ -32,24 +32,18 @@ WorkLens is a lightweight desktop assistant that helps you stay on task by perio
 - Stop: Stops monitoring.
 
 ## Installation
-Windows + Python 3.13 (64-bit) recommended.
+- Recommended (most users): Download the latest release from the Releases page and run the executable.
+  - Download: [Latest release](https://github.com/Vallehtelia/WorkLens/releases/latest)
+  - Unzip and run `WorkLens.exe`. If no API key is found, the app will prompt you once and save it to `%APPDATA%\WorkLens\.env` for future runs.
+- Developer setup (from source): If you want to modify the code, follow these steps:
 
 ```bash
 git clone https://github.com/Vallehtelia/WorkLens.git
 cd WorkLens
-```
 
-Create and activate a virtual environment (recommended):
-
-```bash
 py -3.13 -m venv .venv
 .venv\Scripts\activate
 python -m pip install --upgrade pip wheel
-```
-
-Install dependencies:
-
-```bash
 pip install -r requirements.txt
 ```
 
@@ -81,7 +75,8 @@ If you run into compiler errors (rare on Windows), install the "Desktop developm
 - Optionally place a PNG at `WorkLens/images/logo.png` (displayed at the top of this README and used as a window iconphoto).
 
 ## Run
-Run the app as a module from the repository root so package imports work correctly:
+- From release: Double-click `WorkLens.exe`.
+- From source (repository root):
 
 ```bash
 python -m WorkLens.main
