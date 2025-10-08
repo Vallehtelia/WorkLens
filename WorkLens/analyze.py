@@ -7,6 +7,8 @@ from typing import Optional, Tuple
 from openai import OpenAI
 from pydantic import BaseModel, ValidationError
 
+from WorkLens.config import load_config, get_api_key
+
 
 class FocusCheck(BaseModel):
     on_task: bool
@@ -24,10 +26,16 @@ class AnalysisResult:
 _client: Optional[OpenAI] = None
 
 
-def _get_client() -> OpenAI:
+def _get_client() -> Optional[OpenAI]:
     global _client
-    if _client is None:
-        _client = OpenAI()
+    if _client is not None:
+        return _client
+    # Attempt to init client only if API key is present
+    cfg = load_config()
+    key = get_api_key(cfg)
+    if not key:
+        return None
+    _client = OpenAI()
     return _client
 
 
@@ -37,6 +45,9 @@ def _to_data_url(jpeg_bytes: bytes) -> str:
 
 def analyze_screenshot(jpeg_bytes: bytes, planned_task: str, profession: str = "") -> AnalysisResult:
     client = _get_client()
+    if client is None:
+        return AnalysisResult(parsed=None, input_tokens=0, output_tokens=0, error_message="API key missing")
+
     data_url = _to_data_url(jpeg_bytes)
 
     profession_hint = profession.strip()

@@ -56,10 +56,15 @@ pip install -r requirements.txt
 If you run into compiler errors (rare on Windows), install the "Desktop development with C++" workload from Visual Studio Build Tools, then retry the install.
 
 ## Setup
-- Set your `OPENAI_API_KEY` in your environment or create a `.env` file with:
+- Set your `OPENAI_API_KEY` using either environment variables or a `.env` file.
+- .env lookup order (Windows):
+  1. `%APPDATA%\WorkLens\.env` (used by both source runs and packaged EXE)
+  2. Repository-local `WorkLens/.env` (loaded additionally when running from source)
+- Example `.env` content:
   ```env
   OPENAI_API_KEY=your_api_key_here
   ```
+- If no key is found in either location, the app will prompt for the key on Start and then persist it to `%APPDATA%\WorkLens\.env` for future runs.
 - Optionally edit `config.json` after first run. Example:
   ```json
   {

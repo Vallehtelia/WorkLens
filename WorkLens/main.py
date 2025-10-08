@@ -2,13 +2,13 @@ import os
 import sys
 import threading
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, simpledialog, messagebox
 from datetime import datetime
 
 import ttkbootstrap as tb
 from PIL import Image, ImageTk
 
-from WorkLens.config import load_config, save_config, AppConfig
+from WorkLens.config import load_config, save_config, AppConfig, get_api_key, persist_api_key
 from WorkLens.tracker import FocusTracker
 from WorkLens.notifier import notify_off_task
 
@@ -38,7 +38,6 @@ class WorkLensApp:
             try:
                 with Image.open(png_path) as im:
                     im = im.convert('RGBA')
-                    # Resize to a small icon size while keeping aspect ratio
                     max_side = 28
                     im.thumbnail((max_side, max_side), Image.LANCZOS)
                     self.app_icon_image = ImageTk.PhotoImage(im)
@@ -120,8 +119,24 @@ class WorkLensApp:
 
         frm.columnconfigure(1, weight=1)
 
+    # ---- Helpers ----
+    def _ensure_api_key(self) -> bool:
+        key = get_api_key(self.config)
+        if key:
+            return True
+        # Prompt for key
+        entered = simpledialog.askstring("OpenAI API Key", "Enter your OPENAI_API_KEY:", show='*', parent=self.root)
+        if not entered:
+            messagebox.showwarning("WorkLens", "API key is required to start.")
+            return False
+        persist_api_key(entered, self.config.api_key_env or 'OPENAI_API_KEY')
+        return True
+
     # ---- Event handlers ----
     def on_start(self) -> None:
+        if not self._ensure_api_key():
+            return
+
         planned = self.task_var.get().strip()
         profession = self.prof_var.get().strip()
         try:
@@ -132,7 +147,7 @@ class WorkLensApp:
 
         self.start_btn.configure(state=tk.DISABLED)
         self.break_btn.configure(state=tk.NORMAL)
-        self.stop_btn.configure(state=tk.DISABLED if False else tk.NORMAL)
+        self.stop_btn.configure(state=tk.NORMAL)
 
         # Save config immediately
         save_config(AppConfig(
